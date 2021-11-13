@@ -1,0 +1,32 @@
+directive @constraint(
+  label: String!
+  notEmpty: Boolean
+  notBlank: Boolean
+  pattern: String
+  min: Int
+  max: Int
+) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
+
+scalar Time
+scalar Upload
+
+directive @authentication on FIELD_DEFINITION
+
+interface Connection {
+  pageInfo: PageInfo
+  edges: [Edge]
+}
+
+interface Edge {
+  cursor: String
+  node: Node!
+}
+
+interface Node {
+  id: ID!
+}
+
+extend type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}

@@ -31,7 +31,7 @@ lint:
 ## Generate by Proto
 .PHONY: proto
 proto:
-	docker run --rm --name protoc -v $(PWD)/gen:/pb -v $(SCHEMA_PATH):/proto hizzuu/protoc \
+	docker run --rm --name protoc -v $(PWD)/gen/pb:/pb -v $(SCHEMA_PATH):/proto hizzuu/protoc \
 	-I/proto \
 	--go_out=plugins=grpc:/pb \
 	user.proto

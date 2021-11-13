@@ -7,8 +7,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/hizzuu/grpc-sample-bff/internal/graph"
-	"github.com/hizzuu/grpc-sample-bff/internal/graph/generated"
+	"github.com/hizzuu/grpc-sample-bff/gen/graph"
+	"github.com/hizzuu/grpc-sample-bff/gen/graph/generated"
 )
 
 const defaultPort = "8080"

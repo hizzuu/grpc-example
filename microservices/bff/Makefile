@@ -2,7 +2,7 @@
 
 PJT_NAME = $(notdir $(PWD))
 NET = bff_net
-SCHEMA_PATH = $$(dirname $$(dirname $$(pwd)))/schema
+SCHEMA_PATH = $$(dirname $$(dirname $$(pwd)))/schema/proto
 SVC = bff
 GRPC_SVC = BffService
 
@@ -25,6 +25,20 @@ attach:
 .PHONY: lint
 lint:	
 	docker compose run --rm $(SVC) go vet ./...
+
+## Generate by Proto
+.PHONY: proto
+proto:
+	docker run --rm --name protoc -v $(PWD)/gen/pb:/pb -v $(SCHEMA_PATH):/proto hizzuu/protoc \
+	-I/proto \
+	--go_out=plugins=grpc:/pb \
+	user.proto
+
+## Generate by graphql
+.PHONY: gql
+gql:
+	docker-compose exec $(SVC) go run github.com/99designs/gqlgen generate
+
 
 ## Show help
 .PHONY: help
