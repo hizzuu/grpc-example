@@ -1,0 +1,18 @@
+version: "3"
+services:
+  bff:
+    container_name: bff
+    build:
+      context: ./build/api
+      target: dev
+    env_file:
+      - build/api/.env
+    tty: true
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+
+networks:
+  default:
+    name: bff_net
