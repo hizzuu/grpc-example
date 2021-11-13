@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
 	golang.org/x/sys v0.0.0-20210816183151-1e6c022a8912 // indirect
 	golang.org/x/text v0.3.7 // indirect
