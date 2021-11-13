@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/hizzuu/grpc-sample-user/internal/infrastructure"
+)
 
 func main() {
-	fmt.Println("OK")
+	conn, err := infrastructure.NewMysqlDB()
+	if err != nil {
+		log.Panicln(err)
+	}
+	defer conn.Close()
+
+	sqlHandler := infrastructure.NewSqlHandler(conn)
+	log.Println(sqlHandler)
 }
