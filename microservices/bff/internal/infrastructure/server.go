@@ -7,13 +7,12 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/hizzuu/grpc-sample-bff/gen/graph"
-	"github.com/hizzuu/grpc-sample-bff/gen/graph/generated"
+	"github.com/hizzuu/grpc-sample-bff/internal/graph/generated"
 )
 
 const defaultPort = "8080"
 
-func ListenAndServe() {
+func ListenAndServe(r generated.ResolverRoot) {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
@@ -21,7 +20,7 @@ func ListenAndServe() {
 	srv := handler.NewDefaultServer(
 		generated.NewExecutableSchema(
 			generated.Config{
-				Resolvers: &graph.Resolver{},
+				Resolvers: r,
 			},
 		),
 	)

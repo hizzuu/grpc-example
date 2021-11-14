@@ -13,8 +13,6 @@ RUN apk add --no-cache alpine-sdk git tzdata \
 
 COPY . .
 
-EXPOSE 8080
-
 CMD ["air", "-c", "./tools/air/.air.toml"]
 
 # builder
@@ -40,7 +38,5 @@ FROM alpine as prod
 WORKDIR /app
 
 COPY --from=builder /src/main .
-
-EXPOSE 8080
 
 CMD ["./main"]

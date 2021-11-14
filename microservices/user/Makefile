@@ -1,7 +1,7 @@
 ## Meta info
 
 PJT_NAME = $(notdir $(PWD))
-NET = user_net
+NET = grpc_sample_net
 SCHEMA_PATH = $$(dirname $$(dirname $$(pwd)))/schema
 SVC = user
 GRPC_SVC = UserService

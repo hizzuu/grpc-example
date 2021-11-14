@@ -1,10 +1,10 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - ../../schema/graphql/*.gql
+  - schema/*.gql
 
 # Where should the generated server code go?
 exec:
-  filename: gen/graph/generated/generated.go
+  filename: internal/graph/generated/generated.go
   package: generated
 
 # Uncomment to enable federation
@@ -14,15 +14,14 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: gen/graph/model/models_gen.go
+  filename: internal/graph/model/models_gen.go
   package: model
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: graph
+  dir: internal/graph
   package: graph
-  type: resolver
 
 # Optional: turn on use `gqlgen:"fieldName"` tags in your models
 # struct_tag: json
@@ -50,3 +49,6 @@ models:
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int64
+  Time:
+      model:
+        - "github.com/hizzuu/grpc-sample-bff/internal/graph/scalar.TimeProto"

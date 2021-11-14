@@ -15,4 +15,4 @@ services:
 
 networks:
   default:
-    name: bff_net
+    name: grpc_sample_net

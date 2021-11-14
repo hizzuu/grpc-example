@@ -36,7 +36,6 @@ func (r *UserRepository) Get(ctx context.Context, id int64) (*domain.User, error
 	}()
 	user := &domain.User{}
 	for rows.Next() {
-		fmt.Println("START ROWS SCAN")
 		if err := rows.Scan(
 			&user.ID,
 			&user.Name,

@@ -4,7 +4,10 @@ go 1.17
 
 require (
 	github.com/99designs/gqlgen v0.14.0
+	github.com/golang/protobuf v1.5.2
 	github.com/vektah/gqlparser/v2 v2.2.0
+	google.golang.org/grpc v1.42.0
+	google.golang.org/protobuf v1.27.1
 )
 
 require (
@@ -20,7 +23,11 @@ require (
 	github.com/urfave/cli/v2 v2.1.1 // indirect
 	github.com/vektah/dataloaden v0.2.1-0.20190515034641-a19b9a6e7c9e // indirect
 	golang.org/x/mod v0.3.0 // indirect
+	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
+	golang.org/x/sys v0.0.0-20211113001501-0c823b97ae02 // indirect
+	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.0.0-20210106214847-113979e3529a // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	google.golang.org/genproto v0.0.0-20211112145013-271947fe86fd // indirect
 	gopkg.in/yaml.v2 v2.2.4 // indirect
 )

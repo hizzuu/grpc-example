@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"log"
 
 	"github.com/hizzuu/grpc-sample-user/gen/pb"
 	"github.com/hizzuu/grpc-sample-user/internal/usecase/interactor"
@@ -18,6 +19,7 @@ func NewUserController(userInteractor interactor.UserInteractor) *UserController
 }
 
 func (c *UserController) GetUser(ctx context.Context, r *pb.GetUserReq) (*pb.GetUserRes, error) {
+	log.Println("start: get user in controller")
 	user, err := c.userInteractor.Get(ctx, r.Id)
 	if err != nil {
 		return nil, err
