@@ -2,10 +2,11 @@ package repository
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"database/sql"
 
-	"github.com/hizzuu/grpc-sample-user/internal/domain"
+	"github.com/hizzuu/grpc-example-user/internal/domain"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type UserRepository struct {
@@ -25,31 +26,21 @@ func (r *UserRepository) Get(ctx context.Context, id int64) (*domain.User, error
 		return nil, err
 	}
 	defer stmt.Close()
-	rows, err := stmt.QueryContext(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Println(err)
-		}
-	}()
-	user := &domain.User{}
-	for rows.Next() {
-		if err := rows.Scan(
-			&user.ID,
-			&user.Name,
-			&user.Email,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-		); err != nil {
-			fmt.Println("NOT FOUND")
-			return nil, err
-		}
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
+	row := stmt.QueryRowContext(ctx, id)
 
+	return convertRowToUser(row)
+}
+
+func convertRowToUser(row *sql.Row) (*domain.User, error) {
+	user := &domain.User{}
+	if err := row.Scan(
+		&user.ID,
+		&user.Name,
+		&user.Email,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	); err != nil {
+		return nil, status.Errorf(codes.NotFound, "user not found")
+	}
 	return user, nil
 }

@@ -5,24 +5,15 @@ package graph
 
 import (
 	"context"
-	"log"
 
-	"github.com/hizzuu/grpc-sample-bff/gen/pb"
-	"github.com/hizzuu/grpc-sample-bff/internal/graph/generated"
+	"github.com/hizzuu/grpc-example-bff/gen/pb"
+	"github.com/hizzuu/grpc-example-bff/internal/graph/generated"
+	"github.com/hizzuu/grpc-example-bff/utils/logger"
 )
 
 func (r *queryResolver) GetUser(ctx context.Context, id int64) (*pb.User, error) {
-	in := &pb.GetUserReq{
-		Id: id,
-	}
-	res, err := r.userClient.GetUser(ctx, in)
-	if err != nil {
-		log.Println(err.Error())
-		return nil, err
-	}
-	return &pb.User{
-		Id: res.User.Id,
-	}, nil
+	logger.Log.Debug("start GetUser resolver")
+	return r.userClient.GetUser(ctx, &pb.GetUserReq{Id: id})
 }
 
 // Query returns generated.QueryResolver implementation.
