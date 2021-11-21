@@ -1,7 +1,7 @@
 package infrastructure
 
 import (
-	"github.com/hizzuu/grpc-sample-user/gen/pb"
+	"github.com/hizzuu/grpc-example-user/gen/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

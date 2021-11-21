@@ -35,7 +35,7 @@ resolver:
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.
 autobind:
-  - "github.com/hizzuu/grpc-sample-bff/gen/pb"
+  - "github.com/hizzuu/grpc-example-bff/gen/pb"
 
 # This section declares type mapping between the GraphQL and go type systems
 #
@@ -51,4 +51,4 @@ models:
       - github.com/99designs/gqlgen/graphql.Int64
   Time:
       model:
-        - "github.com/hizzuu/grpc-sample-bff/internal/graph/scalar.TimeProto"
+        - "github.com/hizzuu/grpc-example-bff/internal/graph/scalar.TimeProto"

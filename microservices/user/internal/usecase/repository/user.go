@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/hizzuu/grpc-sample-user/internal/domain"
+	"github.com/hizzuu/grpc-example-user/internal/domain"
 )
 
 type UserRepository interface {

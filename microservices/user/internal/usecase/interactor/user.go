@@ -3,8 +3,8 @@ package interactor
 import (
 	"context"
 
-	"github.com/hizzuu/grpc-sample-user/internal/domain"
-	"github.com/hizzuu/grpc-sample-user/internal/usecase/repository"
+	"github.com/hizzuu/grpc-example-user/internal/domain"
+	"github.com/hizzuu/grpc-example-user/internal/usecase/repository"
 )
 
 type UserInteractor struct {

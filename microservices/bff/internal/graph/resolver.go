@@ -1,8 +1,8 @@
 package graph
 
 import (
-	"github.com/hizzuu/grpc-sample-bff/gen/pb"
-	"github.com/hizzuu/grpc-sample-bff/internal/graph/generated"
+	"github.com/hizzuu/grpc-example-bff/gen/pb"
+	"github.com/hizzuu/grpc-example-bff/internal/graph/generated"
 )
 
 // This file will not be regenerated automatically.

@@ -13,9 +13,9 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/hizzuu/grpc-sample-bff/gen/pb"
-	"github.com/hizzuu/grpc-sample-bff/internal/graph/model"
-	"github.com/hizzuu/grpc-sample-bff/internal/graph/scalar"
+	"github.com/hizzuu/grpc-example-bff/gen/pb"
+	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
+	"github.com/hizzuu/grpc-example-bff/internal/graph/scalar"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -482,7 +482,7 @@ func (ec *executionContext) _Query_getUser(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(*pb.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑsampleᚑbffᚋgenᚋpbᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋpbᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2324,11 +2324,11 @@ func (ec *executionContext) marshalNTime2ᚖgoogleᚗgolangᚗorgᚋprotobufᚋt
 	return res
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋhizzuuᚋgrpcᚑsampleᚑbffᚋgenᚋpbᚐUser(ctx context.Context, sel ast.SelectionSet, v pb.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋpbᚐUser(ctx context.Context, sel ast.SelectionSet, v pb.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑsampleᚑbffᚋgenᚋpbᚐUser(ctx context.Context, sel ast.SelectionSet, v *pb.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋpbᚐUser(ctx context.Context, sel ast.SelectionSet, v *pb.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")

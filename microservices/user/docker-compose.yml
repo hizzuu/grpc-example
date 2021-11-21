@@ -28,4 +28,4 @@ services:
 
 networks:
   default:
-    name: grpc_sample_net
+    name: grpc_example_net
