@@ -2,12 +2,12 @@ syntax = "proto3";
 package user;
 option go_package = "./;pb";
 
-// import "validate/validate.proto";
-// import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
 
 service UserService {
-  rpc GetUser(GetUserReq) returns (GetUserRes);
+  rpc GetUser(GetUserReq) returns (User);
+  rpc CreateUser(CreateUserReq) returns (User);
 }
 
 message User {
@@ -18,10 +18,20 @@ message User {
   google.protobuf.Timestamp updated_at = 5;
 }
 
-message GetUserReq {
-  int64 id = 1;
+message CreateUserReq {
+  oneof data{
+    option (validate.required) = true;
+
+    CreateUserReqInfo info = 1;
+  }
 }
 
-message GetUserRes {
-  User user = 1;
+message CreateUserReqInfo {
+  string email = 1 [(validate.rules).string.email = true];
+  string password = 2 [(validate.rules).string.pattern = "^[A-Za-z0-9]{6,72}$"];
+  string name = 3 [(validate.rules).string = {min_len: 1, max_len: 10}];
+}
+
+message GetUserReq {
+  int64 id = 1 [(validate.rules).int64.gte = 1];
 }
