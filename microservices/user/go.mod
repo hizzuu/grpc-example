@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/envoyproxy/protoc-gen-validate v0.6.2
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/golang/mock v1.6.0
 	go.uber.org/zap v1.19.1
 	google.golang.org/grpc v1.42.0
 	google.golang.org/protobuf v1.27.1
