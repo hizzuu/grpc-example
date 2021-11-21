@@ -1,0 +1,29 @@
+name: Generate Document By Protocol Buffers
+on:
+  push:
+    paths:
+      - 'schema/proto/**'
+
+jobs:
+  gen-readme-and-push:
+    name: Generate & Push
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./schema/proto
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Generate Protocol Buffers README
+      run: |
+        chmod +x ./docgen.sh
+        ./docgen.sh
+    - name: Commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add ./README.md
+        git commit -m "add: Generate protobuf README"
+    
+    - name: Push to GitHub
+      run: git push
