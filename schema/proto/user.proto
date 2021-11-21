@@ -7,7 +7,7 @@ import "validate/validate.proto";
 
 service UserService {
   rpc GetUser(GetUserReq) returns (User);
-  rpc CreateUser(CreateUserReq) returns (User);
+  rpc CreateUser(CreateUserReq) returns (CreateUserRes);
 }
 
 message User {
@@ -16,6 +16,12 @@ message User {
   string name = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
+}
+
+message Tokens {
+  string access_token = 1;
+  string id_token = 2;
+  string refresh_token = 3;
 }
 
 message CreateUserReq {
@@ -28,10 +34,15 @@ message CreateUserReq {
 
 message CreateUserReqInfo {
   string email = 1 [(validate.rules).string.email = true];
-  string password = 2 [(validate.rules).string.pattern = "^[A-Za-z0-9]{6,72}$"];
+  string password = 2 [(validate.rules).string.pattern = "^[A-Za-z0-9]{8,72}$"];
   string name = 3 [(validate.rules).string = {min_len: 1, max_len: 10}];
 }
 
 message GetUserReq {
   int64 id = 1 [(validate.rules).int64.gte = 1];
+}
+
+message CreateUserRes {
+  User user = 1;
+  Tokens tokens = 2;
 }
