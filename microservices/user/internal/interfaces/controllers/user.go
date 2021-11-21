@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"context"
-	"log"
 
-	"github.com/hizzuu/grpc-sample-user/gen/pb"
-	"github.com/hizzuu/grpc-sample-user/internal/usecase/interactor"
+	"github.com/hizzuu/grpc-example-user/gen/pb"
+	"github.com/hizzuu/grpc-example-user/internal/usecase/interactor"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type UserController struct {
@@ -18,16 +19,22 @@ func NewUserController(userInteractor interactor.UserInteractor) *UserController
 	}
 }
 
-func (c *UserController) GetUser(ctx context.Context, r *pb.GetUserReq) (*pb.GetUserRes, error) {
-	log.Println("start: get user in controller")
+func (c *UserController) GetUser(ctx context.Context, r *pb.GetUserReq) (*pb.User, error) {
+	if err := r.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, err.Error())
+	}
 	user, err := c.userInteractor.Get(ctx, r.Id)
 	if err != nil {
 		return nil, err
 	}
-	userProto, err := convUserProto(user)
+	userProto, err := convertUserProto(user)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.GetUserRes{User: userProto}, nil
+	return userProto, nil
+}
+
+func (c *UserController) CreateUser(ctx context.Context, r *pb.CreateUserReq) (*pb.User, error) {
+	return &pb.User{}, nil
 }
