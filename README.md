@@ -22,6 +22,6 @@ Service for CRUD and authentication authorization of users
   - MySQL
 
 ## Schema
-The definition interfaces of protocol buffers and graphql can be found under the `/schema` directory.
+The interfaces definition of protocol buffers and graphql can be found under the `/schema` directory.
 
 - [Protocol Buffers schema document](https://github.com/hizzuu/grpc-example/tree/main/schema/proto)
