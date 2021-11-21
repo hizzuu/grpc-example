@@ -7,7 +7,7 @@ The Go language implementation of gRPC
 - BFF Pattern (Backend for Frontend)
 
 ## Microservices
-The implementation of each microservice can be found under the /services directory.
+The implementation of each microservice can be found under the `/services` directory.
 ### BFF - Backend for Frontend
 Call the relevant microservice APIs to get the data you need
 - Golang
@@ -22,4 +22,6 @@ Service for CRUD and authentication authorization of users
   - MySQL
 
 ## Schema
+The definition interfaces of protocol buffers and graphql can be found under the `/schema` directory.
+
 - [Protocol Buffers schema document](https://github.com/hizzuu/grpc-example/tree/main/schema/proto)
