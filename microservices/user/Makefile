@@ -28,7 +28,12 @@ attach:
 lint:	
 	docker compose run --rm $(SVC) go vet ./...
 
-## Generate by proto
+## Test
+.PHONY: test
+test:
+	docker compose run --rm $(SVC) go test ./...
+
+## Generate by Protoc
 .PHONY: proto
 proto:
 	docker run --rm --name protoc -v $(PWD)/gen/pb:/pb -v $(SCHEMA_PATH)/proto:/schema hizzuu/protoc \
@@ -37,6 +42,10 @@ proto:
 		--go_out=plugins=grpc:/pb \
 		--validate_out="lang=go:/pb" \
 		user.proto
+
+## Generate Mocks
+mock-gen:
+	docker compose run --rm ${SVC} sh tools/gomock/codegen.sh
 
 ## Show help
 .PHONY: help
