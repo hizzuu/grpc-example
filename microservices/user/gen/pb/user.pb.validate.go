@@ -196,6 +196,109 @@ var _ interface {
 	ErrorName() string
 } = UserValidationError{}
 
+// Validate checks the field values on Tokens with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Tokens) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Tokens with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in TokensMultiError, or nil if none found.
+func (m *Tokens) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Tokens) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccessToken
+
+	// no validation rules for IdToken
+
+	// no validation rules for RefreshToken
+
+	if len(errors) > 0 {
+		return TokensMultiError(errors)
+	}
+	return nil
+}
+
+// TokensMultiError is an error wrapping multiple validation errors returned by
+// Tokens.ValidateAll() if the designated constraints aren't met.
+type TokensMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokensMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokensMultiError) AllErrors() []error { return m }
+
+// TokensValidationError is the validation error returned by Tokens.Validate if
+// the designated constraints aren't met.
+type TokensValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokensValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokensValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokensValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokensValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokensValidationError) ErrorName() string { return "TokensValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TokensValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokens.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokensValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokensValidationError{}
+
 // Validate checks the field values on CreateUserReq with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -377,7 +480,7 @@ func (m *CreateUserReqInfo) validate(all bool) error {
 	if !_CreateUserReqInfo_Password_Pattern.MatchString(m.GetPassword()) {
 		err := CreateUserReqInfoValidationError{
 			field:  "Password",
-			reason: "value does not match regex pattern \"^[A-Za-z0-9]{6,72}$\"",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9]{8,72}$\"",
 		}
 		if !all {
 			return err
@@ -525,7 +628,7 @@ var _ interface {
 	ErrorName() string
 } = CreateUserReqInfoValidationError{}
 
-var _CreateUserReqInfo_Password_Pattern = regexp.MustCompile("^[A-Za-z0-9]{6,72}$")
+var _CreateUserReqInfo_Password_Pattern = regexp.MustCompile("^[A-Za-z0-9]{8,72}$")
 
 // Validate checks the field values on GetUserReq with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -635,3 +738,160 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetUserReqValidationError{}
+
+// Validate checks the field values on CreateUserRes with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CreateUserRes) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateUserRes with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CreateUserResMultiError, or
+// nil if none found.
+func (m *CreateUserRes) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateUserRes) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetUser()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateUserResValidationError{
+					field:  "User",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateUserResValidationError{
+					field:  "User",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUser()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateUserResValidationError{
+				field:  "User",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetTokens()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateUserResValidationError{
+					field:  "Tokens",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateUserResValidationError{
+					field:  "Tokens",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTokens()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateUserResValidationError{
+				field:  "Tokens",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CreateUserResMultiError(errors)
+	}
+	return nil
+}
+
+// CreateUserResMultiError is an error wrapping multiple validation errors
+// returned by CreateUserRes.ValidateAll() if the designated constraints
+// aren't met.
+type CreateUserResMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateUserResMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateUserResMultiError) AllErrors() []error { return m }
+
+// CreateUserResValidationError is the validation error returned by
+// CreateUserRes.Validate if the designated constraints aren't met.
+type CreateUserResValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateUserResValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateUserResValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateUserResValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateUserResValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateUserResValidationError) ErrorName() string { return "CreateUserResValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CreateUserResValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateUserRes.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateUserResValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateUserResValidationError{}
