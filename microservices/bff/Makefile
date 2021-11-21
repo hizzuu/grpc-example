@@ -1,7 +1,7 @@
 ## Meta info
 
 PJT_NAME = $(notdir $(PWD))
-NET = grpc_sample_net
+NET = grpc_example_net
 SCHEMA_PATH = $$(dirname $$(dirname $$(pwd)))/schema
 SVC = bff
 GRPC_SVC = BffService
@@ -26,13 +26,15 @@ attach:
 lint:	
 	docker compose run --rm $(SVC) go vet ./...
 
-## Generate by Proto
+## Generate by proto
 .PHONY: proto
 proto:
 	docker run --rm --name protoc -v $(PWD)/gen/pb:/pb -v $(SCHEMA_PATH)/proto:/schema hizzuu/protoc \
-	-I/schema \
-	--go_out=plugins=grpc:/pb \
-	user.proto
+		-I/schema \
+		-I/go/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.6.2 \
+		--go_out=plugins=grpc:/pb \
+		--validate_out="lang=go:/pb" \
+		user.proto
 
 ## Generate by graphql
 .PHONY: gql
