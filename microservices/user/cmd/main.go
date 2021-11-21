@@ -24,11 +24,11 @@ func main() {
 	}
 	defer conn.Close()
 
-	sqlHandler := infrastructure.NewSqlHandler(conn)
-
 	userCtrl := controllers.NewUserController(
-		*interactor.NewUserInteractor(
-			repository.NewUserRepository(sqlHandler),
+		interactor.NewUserInteractor(
+			repository.NewUserRepository(
+				infrastructure.NewSqlHandler(conn),
+			),
 		),
 	)
 	srv := infrastructure.NewGrpcServer(userCtrl)
