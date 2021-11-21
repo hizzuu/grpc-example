@@ -1,4 +1,4 @@
-# Go with gRPC Example
+# Microservices pattern with gRPC Example
 The Go language implementation of gRPC
 
 ## Architecture
