@@ -6,7 +6,7 @@ SCHEMA_PATH = $$(dirname $$(dirname $$(pwd)))/schema
 SVC = user
 GRPC_SVC = UserService
 DB_SVC = user-db
-DB_NAME = user_db
+DB_NAME = user_dev
 
 ## Container up
 .PHONY: up

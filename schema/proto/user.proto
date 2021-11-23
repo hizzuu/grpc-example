@@ -18,21 +18,7 @@ message User {
   google.protobuf.Timestamp updated_at = 5;
 }
 
-message Tokens {
-  string access_token = 1;
-  string id_token = 2;
-  string refresh_token = 3;
-}
-
 message CreateUserReq {
-  oneof data{
-    option (validate.required) = true;
-
-    CreateUserReqInfo info = 1;
-  }
-}
-
-message CreateUserReqInfo {
   string email = 1 [(validate.rules).string.email = true];
   string password = 2 [(validate.rules).string.pattern = "^[A-Za-z0-9]{8,72}$"];
   string name = 3 [(validate.rules).string = {min_len: 1, max_len: 10}];
@@ -44,5 +30,4 @@ message GetUserReq {
 
 message CreateUserRes {
   User user = 1;
-  Tokens tokens = 2;
 }

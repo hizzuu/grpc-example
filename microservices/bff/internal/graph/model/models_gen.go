@@ -2,6 +2,10 @@
 
 package model
 
+import (
+	"github.com/hizzuu/grpc-example-bff/gen/pb"
+)
+
 type Connection interface {
 	IsConnection()
 }
@@ -12,6 +16,17 @@ type Edge interface {
 
 type Node interface {
 	IsNode()
+}
+
+type CreateUserInput struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type CreateUserPayload struct {
+	User    *pb.User `json:"user"`
+	IDToken string   `json:"idToken"`
 }
 
 type PageInfo struct {

@@ -33,11 +33,10 @@ func (c *UserController) GetUser(ctx context.Context, r *pb.GetUserReq) (*pb.Use
 }
 
 func (c *UserController) CreateUser(ctx context.Context, r *pb.CreateUserReq) (*pb.CreateUserRes, error) {
-	user := &domain.User{}
-	switch x := r.Data.(type) {
-	case *pb.CreateUserReq_Info:
-		user.Email = x.Info.Email
-		user.Name = x.Info.Name
+	user := &domain.User{
+		Email:    r.Email,
+		Name:     r.Name,
+		Password: r.Password,
 	}
 	user, err := c.userInteractor.Create(ctx, user)
 	if err != nil {

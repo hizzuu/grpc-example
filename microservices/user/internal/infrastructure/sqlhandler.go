@@ -5,9 +5,9 @@ import (
 	"database/sql"
 )
 
-type contextKey string
+type txContextKey string
 
-const txCtxKey contextKey = "tx"
+const txCtxKey txContextKey = "tx"
 
 type sqlHandler struct {
 	conn *sql.DB

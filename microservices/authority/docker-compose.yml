@@ -1,0 +1,16 @@
+version: "3"
+services:
+  authority:
+    container_name: authority
+    build:
+      context: ./build/api
+      target: dev
+    env_file:
+      - build/api/.env
+    tty: true
+    volumes:
+      - .:/app
+
+networks:
+  default:
+    name: grpc_example_net

@@ -108,13 +108,9 @@ func TestUserController_CreateUser(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				r: &pb.CreateUserReq{
-					Data: &pb.CreateUserReq_Info{
-						Info: &pb.CreateUserReqInfo{
-							Email:    "test+1@example.com",
-							Name:     strings.Repeat("a", 20),
-							Password: "1234abcd",
-						},
-					},
+					Email:    "test+1@example.com",
+					Name:     strings.Repeat("a", 20),
+					Password: "1234abcd",
 				},
 			},
 			prepareMockFn: func(m *mock_interactor.MockUserInteractor) {

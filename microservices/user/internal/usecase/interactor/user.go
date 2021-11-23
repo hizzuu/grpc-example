@@ -29,5 +29,14 @@ func (i *userInteractor) Get(ctx context.Context, id int64) (*domain.User, error
 }
 
 func (i *userInteractor) Create(ctx context.Context, u *domain.User) (*domain.User, error) {
-	return &domain.User{}, nil
+	encryptedPassword, err := genEncryptedPassword(u.Password)
+	if err != nil {
+		return nil, err
+	}
+	u.EncryptedPassword = encryptedPassword
+	user, err := i.Create(ctx, u)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

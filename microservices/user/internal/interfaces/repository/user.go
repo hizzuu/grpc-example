@@ -31,6 +31,25 @@ func (r *UserRepository) Get(ctx context.Context, id int64) (*domain.User, error
 	return convertRowToUser(row)
 }
 
+func (r *UserRepository) Create(ctx context.Context, u *domain.User) (*domain.User, error) {
+	query := `INSERT users SET name=?, email=?, encrypted_password=?, created_at=?, updated_at=?`
+	stmt, err := r.conn.PrepareContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	res, err := stmt.ExecContext(ctx, u.Name, u.Email, u.EncryptedPassword, u.CreatedAt, u.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	u.ID = id
+	return u, nil
+}
+
 func convertRowToUser(row *sql.Row) (*domain.User, error) {
 	user := &domain.User{}
 	if err := row.Scan(

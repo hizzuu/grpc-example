@@ -1,0 +1,14 @@
+syntax = "proto3";
+package authority;
+option go_package = "./;pb";
+
+import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+
+service AuthorityService {
+
+}
+
+message Token {
+  string id_token = 1;
+}
