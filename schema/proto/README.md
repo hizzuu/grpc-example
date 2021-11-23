@@ -5,10 +5,8 @@
 
 - [user.proto](#user.proto)
     - [CreateUserReq](#user.CreateUserReq)
-    - [CreateUserReqInfo](#user.CreateUserReqInfo)
     - [CreateUserRes](#user.CreateUserRes)
     - [GetUserReq](#user.GetUserReq)
-    - [Tokens](#user.Tokens)
     - [User](#user.User)
   
     - [UserService](#user.UserService)
@@ -32,21 +30,6 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| info | [CreateUserReqInfo](#user.CreateUserReqInfo) |  |  |
-
-
-
-
-
-
-<a name="user.CreateUserReqInfo"></a>
-
-### CreateUserReqInfo
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
 | email | [string](#string) |  |  |
 | password | [string](#string) |  |  |
 | name | [string](#string) |  |  |
@@ -65,7 +48,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user | [User](#user.User) |  |  |
-| tokens | [Tokens](#user.Tokens) |  |  |
 
 
 
@@ -81,23 +63,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int64](#int64) |  |  |
-
-
-
-
-
-
-<a name="user.Tokens"></a>
-
-### Tokens
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_token | [string](#string) |  |  |
-| id_token | [string](#string) |  |  |
-| refresh_token | [string](#string) |  |  |
 
 
 
