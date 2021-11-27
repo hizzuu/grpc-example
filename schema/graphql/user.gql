@@ -7,12 +7,15 @@ type User {
 }
 
 extend type Query {
-  getUser(id: ID!): User!
+  getUser(id: ID!): GetUserPayload! @authentication
+}
+
+type GetUserPayload {
+  user: User!
 }
 
 type CreateUserPayload {
   user: User!
-  idToken: String!
 }
 
 input CreateUserInput {

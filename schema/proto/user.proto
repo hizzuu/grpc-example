@@ -6,7 +6,8 @@ import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";
 
 service UserService {
-  rpc GetUser(GetUserReq) returns (User);
+  rpc GetUser(GetUserReq) returns (GetUserRes);
+  rpc GetUserByEmailAndPassword(GetUserByEmailAndPasswordReq) returns (GetUserRes);
   rpc CreateUser(CreateUserReq) returns (CreateUserRes);
 }
 
@@ -26,6 +27,15 @@ message CreateUserReq {
 
 message GetUserReq {
   int64 id = 1 [(validate.rules).int64.gte = 1];
+}
+
+message GetUserByEmailAndPasswordReq {
+  string email = 1;
+  string password = 2;
+}
+
+message GetUserRes {
+  User user = 1;
 }
 
 message CreateUserRes {

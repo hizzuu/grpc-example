@@ -1,0 +1,19 @@
+type Token {
+  idToken: String!
+  refreshToken: String!
+}
+
+extend type Query {
+  login(input: LoginInput!): LoginPayload!
+  refreshIDToken: Token!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LoginPayload {
+  user: User!
+  token: Token!
+}

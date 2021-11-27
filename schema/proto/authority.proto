@@ -3,12 +3,27 @@ package authority;
 option go_package = "./;pb";
 
 import "google/protobuf/timestamp.proto";
-import "validate/validate.proto";
 
 service AuthorityService {
-
+  rpc CreateToken(CreateTokenReq) returns (CreateTokenRes);
+  rpc ListPublicKeys(ListPublicKeysReq) returns (ListPublicKeysRes);
 }
 
 message Token {
   string id_token = 1;
+  string refresh_token = 2;
+}
+
+message CreateTokenReq {
+  string uid = 1;
+}
+
+message ListPublicKeysReq {}
+
+message CreateTokenRes {
+  Token token = 1;
+}
+
+message ListPublicKeysRes {
+  string jwks = 1;
 }
