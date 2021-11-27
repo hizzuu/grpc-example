@@ -7,15 +7,10 @@ import (
 	"github.com/hizzuu/grpc-example-bff/gen/pb"
 	"github.com/hizzuu/grpc-example-bff/internal/graph"
 	"github.com/hizzuu/grpc-example-bff/internal/infrastructure"
+	"github.com/hizzuu/grpc-example-bff/internal/infrastructure/middleware"
 	"github.com/hizzuu/grpc-example-bff/utils/logger"
 	"google.golang.org/grpc"
 )
-
-func init() {
-	if err := logger.NewLogger(); err != nil {
-		log.Panic(err)
-	}
-}
 
 func main() {
 	ctx := context.Background()
@@ -25,8 +20,28 @@ func main() {
 	}
 	defer conn.Close()
 
+	userClient := pb.NewUserServiceClient(conn)
+
+	conn, err = grpc.DialContext(ctx, "authority:50051", grpc.WithInsecure())
+	if err != nil {
+		logger.Log.Panic(err)
+	}
+	defer conn.Close()
+
+	authClient := pb.NewAuthorityServiceClient(conn)
+
+	mw := middleware.NewMiddleware(authClient)
+
 	resolver := graph.NewResolver(
-		pb.NewUserServiceClient(conn),
+		userClient,
+		authClient,
 	)
-	infrastructure.ListenAndServe(resolver)
+
+	infrastructure.ListenAndServe(resolver, mw)
+}
+
+func init() {
+	if err := logger.NewLogger(); err != nil {
+		log.Panic(err)
+	}
 }
