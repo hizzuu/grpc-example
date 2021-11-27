@@ -11,12 +11,15 @@ import (
 
 type Resolver struct {
 	userClient pb.UserServiceClient
+	authClient pb.AuthorityServiceClient
 }
 
 func NewResolver(
 	userClient pb.UserServiceClient,
+	authClient pb.AuthorityServiceClient,
 ) generated.ResolverRoot {
 	return &Resolver{
 		userClient,
+		authClient,
 	}
 }
