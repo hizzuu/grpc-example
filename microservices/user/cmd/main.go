@@ -11,12 +11,6 @@ import (
 	"github.com/hizzuu/grpc-example-user/utils/logger"
 )
 
-func init() {
-	if err := logger.NewLogger(); err != nil {
-		log.Panic(err)
-	}
-}
-
 func main() {
 	conn, err := infrastructure.NewMysqlDB()
 	if err != nil {
@@ -38,5 +32,11 @@ func main() {
 	}
 	if err := srv.Serve(listen); err != nil {
 		logger.Log.Panic(err)
+	}
+}
+
+func init() {
+	if err := logger.NewLogger(); err != nil {
+		log.Panic(err)
 	}
 }
