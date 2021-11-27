@@ -52,7 +52,7 @@ func TestUserController_GetUser(t *testing.T) {
 		name          string
 		args          args
 		prepareMockFn func(m *mock_interactor.MockUserInteractor)
-		want          *pb.User
+		want          *pb.GetUserRes
 		wantErr       bool
 	}{
 		{
@@ -64,7 +64,7 @@ func TestUserController_GetUser(t *testing.T) {
 			prepareMockFn: func(m *mock_interactor.MockUserInteractor) {
 				m.EXPECT().Get(context.Background(), int64(1)).Return(&domain.User{ID: 1}, nil)
 			},
-			want: &pb.User{Id: 1},
+			want: &pb.GetUserRes{User: &pb.User{Id: 1}},
 		},
 	}
 	for _, tt := range tests {
@@ -84,7 +84,7 @@ func TestUserController_GetUser(t *testing.T) {
 				t.Errorf("UserController.GetUser() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got.Id, tt.want.Id) {
+			if !reflect.DeepEqual(got.User.Id, tt.want.User.Id) {
 				t.Errorf("UserController.GetUser() = %v, want %v", got, tt.want)
 			}
 		})
