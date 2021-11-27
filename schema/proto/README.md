@@ -6,7 +6,9 @@
 - [user.proto](#user.proto)
     - [CreateUserReq](#user.CreateUserReq)
     - [CreateUserRes](#user.CreateUserRes)
+    - [GetUserByEmailAndPasswordReq](#user.GetUserByEmailAndPasswordReq)
     - [GetUserReq](#user.GetUserReq)
+    - [GetUserRes](#user.GetUserRes)
     - [User](#user.User)
   
     - [UserService](#user.UserService)
@@ -54,6 +56,22 @@
 
 
 
+<a name="user.GetUserByEmailAndPasswordReq"></a>
+
+### GetUserByEmailAndPasswordReq
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| email | [string](#string) |  |  |
+| password | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="user.GetUserReq"></a>
 
 ### GetUserReq
@@ -63,6 +81,21 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="user.GetUserRes"></a>
+
+### GetUserRes
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#user.User) |  |  |
 
 
 
@@ -101,7 +134,8 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetUser | [GetUserReq](#user.GetUserReq) | [User](#user.User) |  |
+| GetUser | [GetUserReq](#user.GetUserReq) | [GetUserRes](#user.GetUserRes) |  |
+| GetUserByEmailAndPassword | [GetUserByEmailAndPasswordReq](#user.GetUserByEmailAndPasswordReq) | [GetUserRes](#user.GetUserRes) |  |
 | CreateUser | [CreateUserReq](#user.CreateUserReq) | [CreateUserRes](#user.CreateUserRes) |  |
 
  
