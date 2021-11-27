@@ -39,6 +39,7 @@ proto:
 		-I/go/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.6.2 \
 		--go_out=plugins=grpc:/pb \
 		--validate_out="lang=go:/pb" \
+		authority.proto
 
 ## Generate Mocks
 mock-gen:
