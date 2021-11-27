@@ -25,8 +25,21 @@ type CreateUserInput struct {
 }
 
 type CreateUserPayload struct {
-	User    *pb.User `json:"user"`
-	IDToken string   `json:"idToken"`
+	User *pb.User `json:"user"`
+}
+
+type GetUserPayload struct {
+	User *pb.User `json:"user"`
+}
+
+type LoginInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type LoginPayload struct {
+	User  *pb.User  `json:"user"`
+	Token *pb.Token `json:"token"`
 }
 
 type PageInfo struct {
