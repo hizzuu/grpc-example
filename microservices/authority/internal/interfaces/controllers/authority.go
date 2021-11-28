@@ -5,6 +5,7 @@ import (
 
 	"github.com/hizzuu/grpc-example-authority/gen/pb"
 	"github.com/hizzuu/grpc-example-authority/internal/usecase/interactor"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type AuthorityController struct {
@@ -31,7 +32,7 @@ func (c *AuthorityController) CreateToken(ctx context.Context, r *pb.CreateToken
 	}, nil
 }
 
-func (c *AuthorityController) ListPublicKeys(ctx context.Context, r *pb.ListPublicKeysReq) (*pb.ListPublicKeysRes, error) {
+func (c *AuthorityController) ListPublicKeys(ctx context.Context, in *emptypb.Empty) (*pb.ListPublicKeysRes, error) {
 	jwks, err := c.authInteractor.ListPublicKeys()
 	if err != nil {
 		return nil, err

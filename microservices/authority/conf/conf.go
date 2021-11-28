@@ -19,6 +19,7 @@ type apiConfig struct {
 
 type credentialsConfig struct {
 	PrivateKey *rsa.PrivateKey
+	KID        string
 }
 
 var (
@@ -47,11 +48,11 @@ func initApiConf() {
 }
 
 func initCredentialsConf() {
-
 	block, _ := pem.Decode([]byte(os.Getenv("PRIVATE_KEY")))
 	key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
 		panic(fmt.Sprintf("failed to parse private key: %s", err))
 	}
 	CredentialsConf.PrivateKey = key
+	CredentialsConf.KID = os.Getenv("KID")
 }

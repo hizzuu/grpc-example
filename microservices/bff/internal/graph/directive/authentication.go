@@ -2,8 +2,8 @@ package directive
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"strconv"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/hizzuu/grpc-example-bff/internal/graph/errors"
@@ -21,17 +21,12 @@ func Authentication(ctx context.Context, obj interface{}, next graphql.Resolver)
 		return nil, errors.AuthenticationError(err.Error())
 	}
 
-	uid, err := getUIDFromToken(token)
+	claims, err := getClaimsFromToken(token)
 	if err != nil {
-		return nil, errors.AuthenticationError("failed to get uid")
+		return nil, errors.AuthenticationError("failed to get claims")
 	}
 
-	int64UID, err := strconv.ParseInt(uid, 10, 64)
-	if err != nil {
-		return nil, errors.AuthenticationError("failed to parse storing to int64")
-	}
-
-	return next(context.WithValue(ctx, model.CtxUIDKey, int64UID))
+	return next(context.WithValue(ctx, model.CtxClaimsKey, claims))
 }
 
 func getAuthErrFromCtx(ctx context.Context) error {
@@ -53,10 +48,21 @@ func getTokenFromCtx(ctx context.Context) (jwt.Token, error) {
 	return token, nil
 }
 
-func getUIDFromToken(t jwt.Token) (string, error) {
-	uid, ok := t.Get(string(model.UIDKey))
+func getClaimsFromToken(t jwt.Token) (*model.JwtClaims, error) {
+	v, ok := t.Get(string(model.ClaimsKey))
 	if !ok {
-		return "", errors.AuthenticationError("failed to get uid")
+		return nil, fmt.Errorf("failed to get claims from context")
 	}
-	return uid.(string), nil
+
+	b, err := json.Marshal(v)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal")
+	}
+
+	var c *model.JwtClaims
+	if err := json.Unmarshal(b, &c); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal")
+	}
+
+	return c, nil
 }

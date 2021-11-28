@@ -5,7 +5,7 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"strconv"
 
 	"github.com/hizzuu/grpc-example-bff/gen/pb"
 	"github.com/hizzuu/grpc-example-bff/internal/graph/generated"
@@ -24,14 +24,33 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input *model.CreateUs
 }
 
 func (r *queryResolver) GetUser(ctx context.Context, id int64) (*model.GetUserPayload, error) {
-	uid := ctx.Value(model.UIDKey).(int64)
-	fmt.Println(uid, "UID")
 	res, err := r.userClient.GetUser(ctx, &pb.GetUserReq{Id: id})
 	if err != nil {
 		return nil, err
 	}
 
 	return &model.GetUserPayload{
+		User: res.User,
+	}, nil
+}
+
+func (r *queryResolver) GetCurrentUser(ctx context.Context) (*model.GetCurrentUserPayload, error) {
+	c, err := getClaimsFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := strconv.ParseInt(c.User.ID, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := r.userClient.GetUser(ctx, &pb.GetUserReq{Id: id})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.GetCurrentUserPayload{
 		User: res.User,
 	}, nil
 }

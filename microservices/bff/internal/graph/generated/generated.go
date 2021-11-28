@@ -53,6 +53,10 @@ type ComplexityRoot struct {
 		User func(childComplexity int) int
 	}
 
+	GetCurrentUserPayload struct {
+		User func(childComplexity int) int
+	}
+
 	GetUserPayload struct {
 		User func(childComplexity int) int
 	}
@@ -72,6 +76,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		GetCurrentUser func(childComplexity int) int
 		GetUser        func(childComplexity int, id int64) int
 		Login          func(childComplexity int, input model.LoginInput) int
 		RefreshIDToken func(childComplexity int) int
@@ -98,6 +103,7 @@ type QueryResolver interface {
 	Login(ctx context.Context, input model.LoginInput) (*model.LoginPayload, error)
 	RefreshIDToken(ctx context.Context) (*pb.Token, error)
 	GetUser(ctx context.Context, id int64) (*model.GetUserPayload, error)
+	GetCurrentUser(ctx context.Context) (*model.GetCurrentUserPayload, error)
 }
 
 type executableSchema struct {
@@ -121,6 +127,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CreateUserPayload.User(childComplexity), true
+
+	case "GetCurrentUserPayload.user":
+		if e.complexity.GetCurrentUserPayload.User == nil {
+			break
+		}
+
+		return e.complexity.GetCurrentUserPayload.User(childComplexity), true
 
 	case "GetUserPayload.user":
 		if e.complexity.GetUserPayload.User == nil {
@@ -168,6 +181,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.PageInfo.HasNextPage(childComplexity), true
+
+	case "Query.getCurrentUser":
+		if e.complexity.Query.GetCurrentUser == nil {
+			break
+		}
+
+		return e.complexity.Query.GetCurrentUser(childComplexity), true
 
 	case "Query.getUser":
 		if e.complexity.Query.GetUser == nil {
@@ -375,7 +395,8 @@ extend type PageInfo {
 }
 
 extend type Query {
-  getUser(id: ID!): GetUserPayload! @authentication
+  getUser(id: ID!): GetUserPayload!
+  getCurrentUser: GetCurrentUserPayload! @authentication
 }
 
 type GetUserPayload {
@@ -383,6 +404,10 @@ type GetUserPayload {
 }
 
 type CreateUserPayload {
+  user: User!
+}
+
+type GetCurrentUserPayload {
   user: User!
 }
 
@@ -570,6 +595,41 @@ func (ec *executionContext) _CreateUserPayload_user(ctx context.Context, field g
 	}()
 	fc := &graphql.FieldContext{
 		Object:     "CreateUserPayload",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.User, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*pb.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋpbᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _GetCurrentUserPayload_user(ctx context.Context, field graphql.CollectedField, obj *model.GetCurrentUserPayload) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "GetCurrentUserPayload",
 		Field:      field,
 		Args:       nil,
 		IsMethod:   false,
@@ -911,9 +971,44 @@ func (ec *executionContext) _Query_getUser(ctx context.Context, field graphql.Co
 	}
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetUser(rctx, args["id"].(int64))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GetUserPayload)
+	fc.Result = res
+	return ec.marshalNGetUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetUserPayload(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getCurrentUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		directive0 := func(rctx context.Context) (interface{}, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().GetUser(rctx, args["id"].(int64))
+			return ec.resolvers.Query().GetCurrentUser(rctx)
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
 			if ec.directives.Authentication == nil {
@@ -929,10 +1024,10 @@ func (ec *executionContext) _Query_getUser(ctx context.Context, field graphql.Co
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*model.GetUserPayload); ok {
+		if data, ok := tmp.(*model.GetCurrentUserPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/hizzuu/grpc-example-bff/internal/graph/model.GetUserPayload`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/hizzuu/grpc-example-bff/internal/graph/model.GetCurrentUserPayload`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -944,9 +1039,9 @@ func (ec *executionContext) _Query_getUser(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.GetUserPayload)
+	res := resTmp.(*model.GetCurrentUserPayload)
 	fc.Result = res
-	return ec.marshalNGetUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetUserPayload(ctx, field.Selections, res)
+	return ec.marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2519,6 +2614,33 @@ func (ec *executionContext) _CreateUserPayload(ctx context.Context, sel ast.Sele
 	return out
 }
 
+var getCurrentUserPayloadImplementors = []string{"GetCurrentUserPayload"}
+
+func (ec *executionContext) _GetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, obj *model.GetCurrentUserPayload) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, getCurrentUserPayloadImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GetCurrentUserPayload")
+		case "user":
+			out.Values[i] = ec._GetCurrentUserPayload_user(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var getUserPayloadImplementors = []string{"GetUserPayload"}
 
 func (ec *executionContext) _GetUserPayload(ctx context.Context, sel ast.SelectionSet, obj *model.GetUserPayload) graphql.Marshaler {
@@ -2690,6 +2812,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_getUser(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "getCurrentUser":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getCurrentUser(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -3066,6 +3202,20 @@ func (ec *executionContext) marshalNCreateUserPayload2ᚖgithubᚗcomᚋhizzuu�
 		return graphql.Null
 	}
 	return ec._CreateUserPayload(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNGetCurrentUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, v model.GetCurrentUserPayload) graphql.Marshaler {
+	return ec._GetCurrentUserPayload(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.GetCurrentUserPayload) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._GetCurrentUserPayload(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNGetUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetUserPayload(ctx context.Context, sel ast.SelectionSet, v model.GetUserPayload) graphql.Marshaler {

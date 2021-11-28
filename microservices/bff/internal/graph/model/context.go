@@ -2,6 +2,8 @@ package model
 
 type contextKey string
 
-const CtxJwtTokenKey contextKey = "jwtToken"
-const CtxUIDKey contextKey = "jwtToken"
-const CtxAuthErrorCtxKey contextKey = "authError"
+const (
+	CtxJwtTokenKey     contextKey = "jwtToken"
+	CtxClaimsKey       contextKey = "jwtClaims"
+	CtxAuthErrorCtxKey contextKey = "authError"
+)

@@ -31,15 +31,23 @@ func genToken(userID string) (*domain.Token, error) {
 func genJwt(userID string, sub string, expSec int64) (string, error) {
 	exp := time.Now().Add(time.Duration(expSec) * time.Second).Unix()
 
+	claims := &domain.JwtClaims{
+		User: struct {
+			ID string `json:"id"`
+		}{
+			ID: userID,
+		},
+	}
+
 	token := jwt.New()
 	token.Set(jwt.ExpirationKey, exp)
 	token.Set(jwt.SubjectKey, sub)
-	token.Set(domain.UIDKey, userID)
+	token.Set(domain.ClaimsKey, claims)
 
 	headers := jws.NewHeaders()
 	headers.Set(jws.AlgorithmKey, jwa.RS256)
 	headers.Set(jws.TypeKey, domain.TypeName)
-	headers.Set(jws.KeyIDKey, "test-kid")
+	headers.Set(jws.KeyIDKey, conf.CredentialsConf.KID)
 
 	return signToken(token, headers)
 }

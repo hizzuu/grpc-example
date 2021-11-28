@@ -3,10 +3,11 @@ package authority;
 option go_package = "./;pb";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 service AuthorityService {
   rpc CreateToken(CreateTokenReq) returns (CreateTokenRes);
-  rpc ListPublicKeys(ListPublicKeysReq) returns (ListPublicKeysRes);
+  rpc ListPublicKeys(google.protobuf.Empty) returns (ListPublicKeysRes);
 }
 
 message Token {

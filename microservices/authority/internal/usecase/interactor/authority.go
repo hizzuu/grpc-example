@@ -40,7 +40,7 @@ func (i *authorityInteractor) ListPublicKeys() (string, error) {
 		return "", status.Error(codes.Internal, "failed to create jwk")
 	}
 
-	if err = key.Set(jws.KeyIDKey, "test-kid"); err != nil {
+	if err = key.Set(jws.KeyIDKey, conf.CredentialsConf.KID); err != nil {
 		return "", status.Error(codes.Internal, "failed to create jwks")
 	}
 

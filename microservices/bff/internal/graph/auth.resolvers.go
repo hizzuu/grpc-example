@@ -24,8 +24,6 @@ func (r *queryResolver) Login(ctx context.Context, input model.LoginInput) (*mod
 		return nil, err
 	}
 
-	fmt.Print(authRes.Token.IdToken)
-
 	return &model.LoginPayload{
 		User:  userRes.User,
 		Token: authRes.Token,

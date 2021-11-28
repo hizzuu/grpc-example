@@ -6,46 +6,82 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
-	"github.com/hizzuu/grpc-example-bff/gen/pb"
 	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
+	"github.com/hizzuu/grpc-example-bff/utils/logger"
 	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/lestrrat-go/jwx/jwt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (m *Middleware) Authentication(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authHeader := r.Header.Get("Authorization")
-		if authHeader == "" {
-			next.ServeHTTP(w, r)
-			return
-		}
+		ctx := r.Context()
 
-		idToken := getIDTokenFromHeader(r)
-		if idToken == "" {
-			next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), model.CtxAuthErrorCtxKey, fmt.Errorf("failed to authenticate"))))
-			return
-		}
-
-		res, err := m.authClient.ListPublicKeys(r.Context(), &pb.ListPublicKeysReq{})
+		idToken, err := getIDTokenFromHeader(r)
 		if err != nil {
-			next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), model.CtxAuthErrorCtxKey, fmt.Errorf("failed to authenticate"))))
+			logger.Log.Infof("unauthenticate: %s", err.Error())
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(
+					ctx,
+					model.CtxAuthErrorCtxKey,
+					status.Error(codes.Unauthenticated, "unauthenticate"),
+				),
+			))
+			return
+		}
+
+		res, err := m.authClient.ListPublicKeys(r.Context(), &emptypb.Empty{})
+		if err != nil {
+			logger.Log.Errorf("unauthenticate: %s", err.Error())
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(
+					ctx,
+					model.CtxAuthErrorCtxKey,
+					status.Error(codes.Unauthenticated, "unauthenticate"),
+				),
+			))
 			return
 		}
 
 		token, err := verifyIDToken(idToken, res.Jwks)
 		if err != nil {
-			next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), model.CtxAuthErrorCtxKey, fmt.Errorf("failed to authenticate"))))
+			logger.Log.Errorf("unauthenticate: %s", err.Error())
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(
+					ctx,
+					model.CtxAuthErrorCtxKey,
+					status.Error(codes.Unauthenticated, "unauthenticate"),
+				),
+			))
 			return
 		}
 
-		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), model.CtxJwtTokenKey, token)))
+		next.ServeHTTP(w, r.WithContext(
+			context.WithValue(
+				ctx,
+				model.CtxJwtTokenKey,
+				token,
+			),
+		))
 	})
 }
 
-func getIDTokenFromHeader(r *http.Request) string {
+func getIDTokenFromHeader(r *http.Request) (string, error) {
 	authorization := r.Header.Get("Authorization")
-	return strings.Replace(authorization, "Bearer ", "", 1)
+	if authorization == "" {
+		return "", fmt.Errorf("failed to get Authorization from header")
+	}
+
+	idToken := strings.TrimPrefix(authorization, "Bearer ")
+	if idToken == "" {
+		return "", fmt.Errorf("failed to get token from authorization")
+	}
+
+	return idToken, nil
 }
 
 func verifyIDToken(idToken string, jwks string) (jwt.Token, error) {
@@ -57,6 +93,10 @@ func verifyIDToken(idToken string, jwks string) (jwt.Token, error) {
 	token, err := jwt.Parse([]byte(idToken), jwt.WithKeySet(key))
 	if err != nil {
 		return nil, fmt.Errorf("failed to verify token")
+	}
+
+	if time.Now().After(token.Expiration().Local()) {
+		return nil, fmt.Errorf("token has expired")
 	}
 
 	return token, nil

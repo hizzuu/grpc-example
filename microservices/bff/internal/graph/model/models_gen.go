@@ -28,6 +28,10 @@ type CreateUserPayload struct {
 	User *pb.User `json:"user"`
 }
 
+type GetCurrentUserPayload struct {
+	User *pb.User `json:"user"`
+}
+
 type GetUserPayload struct {
 	User *pb.User `json:"user"`
 }
