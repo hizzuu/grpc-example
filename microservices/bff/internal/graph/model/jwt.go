@@ -2,7 +2,7 @@ package model
 
 const (
 	TypeName           string = "JWT"
-	ClaimsKey          string = "jwtClaims"
+	ClaimsKey          string = "claims"
 	IdTokenSub         string = "id_token"
 	RefreshTokenSub    string = "refresh_token"
 	IdTokenExpSec      int64  = 3600
