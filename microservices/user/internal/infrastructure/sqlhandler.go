@@ -13,12 +13,7 @@ type sqlHandler struct {
 	conn *sql.DB
 }
 
-type SqlHandler interface {
-	DoInTx(ctx context.Context, f func(ctx context.Context) (interface{}, error)) (interface{}, error)
-	PrepareContext(ctx context.Context, query string) (*sql.Stmt, error)
-}
-
-func NewSqlHandler(conn *sql.DB) SqlHandler {
+func NewSqlHandler(conn *sql.DB) *sqlHandler {
 	return &sqlHandler{
 		conn,
 	}
