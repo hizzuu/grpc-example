@@ -4,7 +4,7 @@ schema:
 
 # Where should the generated server code go?
 exec:
-  filename: internal/graph/generated/generated.go
+  filename: gen/graph/generated/generated.go
   package: generated
 
 # Uncomment to enable federation
@@ -14,13 +14,13 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: internal/graph/model/models_gen.go
+  filename: gen/graph/model/models_gen.go
   package: model
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: internal/graph
+  dir: gen/graph
   package: graph
 
 # Optional: turn on use `gqlgen:"fieldName"` tags in your models
@@ -51,4 +51,4 @@ models:
       - github.com/99designs/gqlgen/graphql.Int64
   Time:
       model:
-        - "github.com/hizzuu/grpc-example-bff/internal/graph/scalar.TimeProto"
+        - "github.com/hizzuu/grpc-example-bff/gen/graph/scalar.TimeProto"

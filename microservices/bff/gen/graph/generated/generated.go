@@ -13,9 +13,9 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/model"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/scalar"
 	"github.com/hizzuu/grpc-example-bff/gen/pb"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/scalar"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -494,7 +494,7 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	var arg0 *model.CreateUserInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalOCreateUserInput2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
+		arg0, err = ec.unmarshalOCreateUserInput2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -539,7 +539,7 @@ func (ec *executionContext) field_Query_login_args(ctx context.Context, rawArgs 
 	var arg0 model.LoginInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNLoginInput2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐLoginInput(ctx, tmp)
+		arg0, err = ec.unmarshalNLoginInput2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐLoginInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -800,7 +800,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.CreateUserPayload)
 	fc.Result = res
-	return ec.marshalNCreateUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐCreateUserPayload(ctx, field.Selections, res)
+	return ec.marshalNCreateUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐCreateUserPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _PageInfo_hasNextPage(ctx context.Context, field graphql.CollectedField, obj *model.PageInfo) (ret graphql.Marshaler) {
@@ -909,7 +909,7 @@ func (ec *executionContext) _Query_login(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(*model.LoginPayload)
 	fc.Result = res
-	return ec.marshalNLoginPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐLoginPayload(ctx, field.Selections, res)
+	return ec.marshalNLoginPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐLoginPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_refreshIDToken(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -986,7 +986,7 @@ func (ec *executionContext) _Query_getUser(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(*model.GetUserPayload)
 	fc.Result = res
-	return ec.marshalNGetUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetUserPayload(ctx, field.Selections, res)
+	return ec.marshalNGetUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐGetUserPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_getCurrentUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1027,7 +1027,7 @@ func (ec *executionContext) _Query_getCurrentUser(ctx context.Context, field gra
 		if data, ok := tmp.(*model.GetCurrentUserPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/hizzuu/grpc-example-bff/internal/graph/model.GetCurrentUserPayload`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/hizzuu/grpc-example-bff/gen/graph/model.GetCurrentUserPayload`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1041,7 +1041,7 @@ func (ec *executionContext) _Query_getCurrentUser(ctx context.Context, field gra
 	}
 	res := resTmp.(*model.GetCurrentUserPayload)
 	fc.Result = res
-	return ec.marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx, field.Selections, res)
+	return ec.marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3190,11 +3190,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCreateUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐCreateUserPayload(ctx context.Context, sel ast.SelectionSet, v model.CreateUserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNCreateUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐCreateUserPayload(ctx context.Context, sel ast.SelectionSet, v model.CreateUserPayload) graphql.Marshaler {
 	return ec._CreateUserPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCreateUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐCreateUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.CreateUserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNCreateUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐCreateUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.CreateUserPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3204,11 +3204,11 @@ func (ec *executionContext) marshalNCreateUserPayload2ᚖgithubᚗcomᚋhizzuu�
 	return ec._CreateUserPayload(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNGetCurrentUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, v model.GetCurrentUserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNGetCurrentUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, v model.GetCurrentUserPayload) graphql.Marshaler {
 	return ec._GetCurrentUserPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.GetCurrentUserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐGetCurrentUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.GetCurrentUserPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3218,11 +3218,11 @@ func (ec *executionContext) marshalNGetCurrentUserPayload2ᚖgithubᚗcomᚋhizz
 	return ec._GetCurrentUserPayload(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNGetUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetUserPayload(ctx context.Context, sel ast.SelectionSet, v model.GetUserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNGetUserPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐGetUserPayload(ctx context.Context, sel ast.SelectionSet, v model.GetUserPayload) graphql.Marshaler {
 	return ec._GetUserPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNGetUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐGetUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.GetUserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNGetUserPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐGetUserPayload(ctx context.Context, sel ast.SelectionSet, v *model.GetUserPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3247,16 +3247,16 @@ func (ec *executionContext) marshalNID2int64(ctx context.Context, sel ast.Select
 	return res
 }
 
-func (ec *executionContext) unmarshalNLoginInput2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐLoginInput(ctx context.Context, v interface{}) (model.LoginInput, error) {
+func (ec *executionContext) unmarshalNLoginInput2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐLoginInput(ctx context.Context, v interface{}) (model.LoginInput, error) {
 	res, err := ec.unmarshalInputLoginInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNLoginPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐLoginPayload(ctx context.Context, sel ast.SelectionSet, v model.LoginPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNLoginPayload2githubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐLoginPayload(ctx context.Context, sel ast.SelectionSet, v model.LoginPayload) graphql.Marshaler {
 	return ec._LoginPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLoginPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐLoginPayload(ctx context.Context, sel ast.SelectionSet, v *model.LoginPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNLoginPayload2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐLoginPayload(ctx context.Context, sel ast.SelectionSet, v *model.LoginPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3607,7 +3607,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return graphql.MarshalBoolean(*v)
 }
 
-func (ec *executionContext) unmarshalOCreateUserInput2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋinternalᚋgraphᚋmodelᚐCreateUserInput(ctx context.Context, v interface{}) (*model.CreateUserInput, error) {
+func (ec *executionContext) unmarshalOCreateUserInput2ᚖgithubᚗcomᚋhizzuuᚋgrpcᚑexampleᚑbffᚋgenᚋgraphᚋmodelᚐCreateUserInput(ctx context.Context, v interface{}) (*model.CreateUserInput, error) {
 	if v == nil {
 		return nil, nil
 	}

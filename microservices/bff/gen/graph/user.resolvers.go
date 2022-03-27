@@ -5,11 +5,13 @@ package graph
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"strconv"
 
+	"github.com/hizzuu/grpc-example-bff/gen/graph/generated"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/model"
 	"github.com/hizzuu/grpc-example-bff/gen/pb"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/generated"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input *model.CreateUserInput) (*model.CreateUserPayload, error) {
@@ -59,3 +61,23 @@ func (r *queryResolver) GetCurrentUser(ctx context.Context) (*model.GetCurrentUs
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 type mutationResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func getClaimsFromCtx(ctx context.Context) (*model.JwtClaims, error) {
+	b, err := json.Marshal(ctx.Value(model.CtxClaimsKey))
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal")
+	}
+
+	var c *model.JwtClaims
+	if err := json.Unmarshal(b, &c); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal")
+	}
+
+	return c, nil
+}

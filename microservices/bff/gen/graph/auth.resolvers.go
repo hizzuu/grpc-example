@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/hizzuu/grpc-example-bff/gen/graph/generated"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/model"
 	"github.com/hizzuu/grpc-example-bff/gen/pb"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/generated"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
 )
 
 func (r *queryResolver) Login(ctx context.Context, input model.LoginInput) (*model.LoginPayload, error) {

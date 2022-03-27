@@ -1,4 +1,4 @@
-package middleware
+package handler
 
 import (
 	"bytes"
@@ -8,8 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
-	"github.com/hizzuu/grpc-example-bff/utils/logger"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/model"
 	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/lestrrat-go/jwx/jwt"
 	"google.golang.org/grpc/codes"
@@ -17,13 +16,13 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (m *Middleware) Authentication(next http.Handler) http.Handler {
+func (h *handler) Authentication(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
 		idToken, err := getIDTokenFromHeader(r)
 		if err != nil {
-			logger.Log.Infof("unauthenticate: %s", err.Error())
+			// logger.Log.Infof("unauthenticate: %s", err.Error())
 			next.ServeHTTP(w, r.WithContext(
 				context.WithValue(
 					ctx,
@@ -34,9 +33,9 @@ func (m *Middleware) Authentication(next http.Handler) http.Handler {
 			return
 		}
 
-		res, err := m.authClient.ListPublicKeys(r.Context(), &emptypb.Empty{})
+		res, err := h.authClient.ListPublicKeys(r.Context(), &emptypb.Empty{})
 		if err != nil {
-			logger.Log.Errorf("unauthenticate: %s", err.Error())
+			// logger.Log.Errorf("unauthenticate: %s", err.Error())
 			next.ServeHTTP(w, r.WithContext(
 				context.WithValue(
 					ctx,
@@ -49,7 +48,7 @@ func (m *Middleware) Authentication(next http.Handler) http.Handler {
 
 		token, err := verifyIDToken(idToken, res.Jwks)
 		if err != nil {
-			logger.Log.Errorf("unauthenticate: %s", err.Error())
+			// logger.Log.Errorf("unauthenticate: %s", err.Error())
 			next.ServeHTTP(w, r.WithContext(
 				context.WithValue(
 					ctx,

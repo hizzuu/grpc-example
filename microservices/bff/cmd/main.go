@@ -2,18 +2,19 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 
+	"github.com/hizzuu/grpc-example-bff/gen/graph"
 	"github.com/hizzuu/grpc-example-bff/gen/pb"
-	"github.com/hizzuu/grpc-example-bff/internal/graph"
-	"github.com/hizzuu/grpc-example-bff/internal/infrastructure"
-	"github.com/hizzuu/grpc-example-bff/internal/infrastructure/middleware"
+	"github.com/hizzuu/grpc-example-bff/internal/infrastructure/graphql"
+	"github.com/hizzuu/grpc-example-bff/internal/infrastructure/server"
 	"github.com/hizzuu/grpc-example-bff/utils/logger"
 	"google.golang.org/grpc"
 )
 
 func main() {
 	ctx := context.Background()
+
 	conn, err := grpc.DialContext(ctx, "user:50051", grpc.WithInsecure())
 	if err != nil {
 		logger.Log.Panic(err)
@@ -30,18 +31,16 @@ func main() {
 
 	authClient := pb.NewAuthorityServiceClient(conn)
 
-	mw := middleware.NewMiddleware(authClient)
-
 	resolver := graph.NewResolver(
 		userClient,
 		authClient,
 	)
 
-	infrastructure.ListenAndServe(resolver, mw)
-}
+	srv := graphql.New(resolver)
 
-func init() {
-	if err := logger.NewLogger(); err != nil {
-		log.Panic(err)
+	s := server.New(srv, authClient)
+
+	if err := s.Listen(); err != nil {
+		fmt.Println(err.Error())
 	}
 }

@@ -1,6 +1,14 @@
 package model
 
+type contextKey string
+
 const (
+	// context
+	CtxJwtTokenKey     contextKey = "jwtToken"
+	CtxClaimsKey       contextKey = "jwtClaims"
+	CtxAuthErrorCtxKey contextKey = "authError"
+
+	// token
 	TypeName           string = "JWT"
 	ClaimsKey          string = "claims"
 	IdTokenSub         string = "id_token"

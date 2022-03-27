@@ -6,24 +6,24 @@ import (
 	"fmt"
 
 	"github.com/99designs/gqlgen/graphql"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/errors"
-	"github.com/hizzuu/grpc-example-bff/internal/graph/model"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/gqlerr"
+	"github.com/hizzuu/grpc-example-bff/gen/graph/model"
 	"github.com/lestrrat-go/jwx/jwt"
 )
 
-func Authentication(ctx context.Context, obj interface{}, next graphql.Resolver) (interface{}, error) {
+func (d *directive) Authentication(ctx context.Context, obj interface{}, next graphql.Resolver) (interface{}, error) {
 	if err := getAuthErrFromCtx(ctx); err != nil {
-		return nil, errors.AuthenticationError(err.Error())
+		return nil, gqlerr.AuthenticationError(err.Error())
 	}
 
 	token, err := getTokenFromCtx(ctx)
 	if err != nil {
-		return nil, errors.AuthenticationError(err.Error())
+		return nil, gqlerr.AuthenticationError(err.Error())
 	}
 
 	claims, err := getClaimsFromToken(token)
 	if err != nil {
-		return nil, errors.AuthenticationError("failed to get claims")
+		return nil, gqlerr.AuthenticationError("failed to get claims")
 	}
 
 	return next(context.WithValue(ctx, model.CtxClaimsKey, claims))

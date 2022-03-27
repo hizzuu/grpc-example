@@ -43,7 +43,7 @@ proto:
 
 ## Generate Mocks
 mock-gen:
-	docker compose run --rm ${SVC} sh tools/gomock/codegen.sh
+	docker compose run --rm ${SVC} sh bin/gomockgen.sh
 
 ## Show help
 .PHONY: help
