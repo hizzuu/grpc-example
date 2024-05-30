@@ -16,7 +16,7 @@ Call the relevant microservice APIs to get the data you need
 - gRPC
 
 ### User Service
-Service for create, update, and fetch users
+Service for create, update, and fetch users.
 - Golang
 - gRPC
 - Middleware
