@@ -1,0 +1,43 @@
+name: release pr
+
+on:
+  push:
+    branches:
+      - develop
+
+# 並列実行の制御 cf. https://docs.github.com/ja/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+      - name: install git-pr-release
+        run: |
+          gem install git-pr-release -N
+      - name: create pr
+        run: |
+          echo "GITHUB_REPOSITORY=${GITHUB_REPOSITORY}"
+          GITLOG=$(git log -1 --no-merges --oneline origin/production..origin/develop | cat)
+          echo "GITLOG=${GITLOG}"
+          if [ -n "${GITLOG}" ]; then
+            echo "diff found"
+            export GIT_PR_RELEASE_TOKEN=${{ secrets.GITHUB_TOKEN }}
+            export GIT_PR_RELEASE_BRANCH_PRODUCTION=production
+            export GIT_PR_RELEASE_BRANCH_STAGING=develop
+            export DEBUG=1
+            git-pr-release --squashed --source=develop --target=production
+          else
+            echo "diff not found"
+          fi
+        env:
+          TZ: Asia/Tokyo
+
