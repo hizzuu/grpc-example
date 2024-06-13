@@ -34,7 +34,7 @@ jobs:
             export GIT_PR_RELEASE_BRANCH_PRODUCTION=production
             export GIT_PR_RELEASE_BRANCH_STAGING=develop
             export DEBUG=1
-            git-pr-release --squashed --source=develop --target=production
+            git-pr-release --squashed
           else
             echo "diff not found"
           fi
