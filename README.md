@@ -16,7 +16,7 @@ Call the relevant microservice APIs to get the data you need
 - gRPC
 
 ### User Service
-Service for create, update, and fetch users
+Service for create, update, and fetch users.
 - Golang
 - gRPC
 - Middleware
@@ -34,3 +34,5 @@ The interfaces definition of protocol buffers and graphql can be found under the
 ### Protocol Buffers
 - [Docker Image Repository for using Protoc configured in Go](https://github.com/hizzuu/protoc)
 - [Protocol Buffers schema document](https://github.com/hizzuu/grpc-example/tree/main/schema/proto)
+
+add
